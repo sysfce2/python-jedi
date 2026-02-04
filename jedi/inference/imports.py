@@ -370,16 +370,16 @@ def import_module_by_names(inference_state, import_names, sys_path=None,
         i.value if isinstance(i, tree.Name) else i
         for i in import_names
     )
-    value_set = [None]
+    base = [None]
     for i, name in enumerate(import_names):
-        value_set = ValueSet.from_sets([
+        base = value_set = ValueSet.from_sets([
             import_module(
                 inference_state,
                 str_import_names[:i+1],
                 parent_module_value,
                 sys_path,
-                prefer_stubs=prefer_stubs,
-            ) for parent_module_value in value_set
+                prefer_stubs=prefer_stubs,  # type: ignore[call-arg]
+            ) for parent_module_value in base
         ])
         if not value_set:
             message = 'No module named ' + '.'.join(str_import_names)
