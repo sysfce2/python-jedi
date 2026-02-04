@@ -6,6 +6,7 @@ values.
 This file deals with all the typing.py cases.
 """
 import itertools
+from typing import Any
 
 from jedi import debug
 from jedi.inference.compiled import builtin_from_name, create_simple_object
@@ -186,6 +187,8 @@ class ProxyTypingValue(BaseTypingValue):
 
 
 class _TypingClassMixin(ClassMixin):
+    _tree_name: Any
+
     def py__bases__(self):
         return [LazyKnownValues(
             self.inference_state.builtins_module.py__getattribute__('object')

@@ -5,7 +5,7 @@ import os
 from itertools import chain
 from contextlib import contextmanager
 
-from parso.python import tree
+from parso import tree
 
 
 def is_stdlib_path(path):

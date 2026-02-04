@@ -89,6 +89,7 @@ def infer_node(context, element):
     if isinstance(context, CompForContext):
         return _infer_node(context, element)
 
+    name_dicts = [{}]
     if_stmt = element
     while if_stmt is not None:
         if_stmt = if_stmt.parent
@@ -104,7 +105,6 @@ def infer_node(context, element):
     if predefined_if_name_dict is None and if_stmt \
             and if_stmt.type == 'if_stmt' and context.inference_state.is_analysis:
         if_stmt_test = if_stmt.children[1]
-        name_dicts = [{}]
         # If we already did a check, we don't want to do it again -> If
         # value.predefined_names is filled, we stop.
         # We don't want to check the if stmt itself, it's just about
@@ -435,7 +435,7 @@ def _infer_expr_stmt(context, stmt, seek_name=None):
             value_set = ValueSet(to_mod(v) for v in left_values)
         else:
             operator = copy.copy(first_operator)
-            operator.value = operator.value[:-1]
+            operator.value = operator.value[:-1]  # type: ignore[attor-defined]
             for_stmt = stmt.search_ancestor('for_stmt')
             if for_stmt is not None and for_stmt.type == 'for_stmt' and value_set \
                     and parser_utils.for_stmt_defines_one_name(for_stmt):

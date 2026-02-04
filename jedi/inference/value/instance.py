@@ -1,4 +1,5 @@
 from abc import abstractproperty
+from typing import Any
 
 from jedi import debug
 from jedi import settings
@@ -187,6 +188,8 @@ class CompiledInstance(AbstractInstanceValue):
 
 
 class _BaseTreeInstance(AbstractInstanceValue):
+    get_defined_names: Any
+
     @property
     def array_type(self):
         name = self.class_value.py__name__()

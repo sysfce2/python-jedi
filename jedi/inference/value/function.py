@@ -1,3 +1,5 @@
+from typing import Any
+
 from jedi import debug
 from jedi.inference.cache import inference_state_method_cache, CachedMetaClass
 from jedi.inference import compiled
@@ -53,6 +55,10 @@ class FunctionAndClassBase(TreeValue):
 
 class FunctionMixin:
     api_type = 'function'
+    tree_node: Any
+    py__class__: Any
+    as_context: Any
+    get_signature_functions: Any
 
     def get_filters(self, origin_scope=None):
         cls = self.py__class__()

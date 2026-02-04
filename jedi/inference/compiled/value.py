@@ -592,7 +592,7 @@ def create_from_name(inference_state, compiled_value, name):
         value = create_cached_compiled_value(
             inference_state,
             access_path,
-            parent_context=None if value is None else value.as_context(),
+            parent_context=None if value is None else value.as_context(),  # type: ignore  # TODO
         )
     return value
 
@@ -610,7 +610,7 @@ def create_from_access_path(inference_state, access_path):
         value = create_cached_compiled_value(
             inference_state,
             access,
-            parent_context=None if value is None else value.as_context()
+            parent_context=None if value is None else value.as_context()  # type: ignore  # TODO
         )
     return value
 

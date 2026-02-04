@@ -192,7 +192,7 @@ def _iter_pytest_modules(module_context, skip_own_module=False):
             folder = folder.get_parent_folder()
 
             # prevent an infinite for loop if the same parent folder is return twice
-            if last_folder is not None and folder.path == last_folder.path:
+            if last_folder is not None and folder.path == last_folder.path:  # type: ignore  # TODO
                 break
             last_folder = folder  # keep track of the last found parent name
 

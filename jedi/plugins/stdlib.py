@@ -134,7 +134,7 @@ def execute(callback):
             except KeyError:
                 pass
             else:
-                return func(value, arguments=arguments, callback=call)
+                return func(value, arguments=arguments, callback=call)  # type: ignore
         return call()
 
     return wrapper

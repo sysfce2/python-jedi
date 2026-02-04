@@ -2,6 +2,7 @@
 This module is about generics, like the `int` in `List[int]`. It's not about
 the Generic class.
 """
+from abc import abstractmethod
 
 from jedi import debug
 from jedi.cache import memoize_method
@@ -24,6 +25,14 @@ def _resolve_forward_references(context, value_set):
 
 
 class _AbstractGenericManager:
+    @abstractmethod
+    def __getitem__(self, index):
+        raise NotImplementedError
+
+    @abstractmethod
+    def to_tuple(self):
+        raise NotImplementedError
+
     def get_index_and_execute(self, index):
         try:
             return self[index].execute_annotation()

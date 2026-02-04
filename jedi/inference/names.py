@@ -1,9 +1,8 @@
 from abc import abstractmethod
 from inspect import Parameter
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Any
 
 from jedi.parser_utils import find_statement_documentation, clean_scope_docstring
-from jedi.inference.utils import unite
 from jedi.inference.base_value import ValueSet, NO_VALUES
 from jedi.inference.cache import inference_state_method_cache
 from jedi.inference import docstrings
@@ -37,7 +36,6 @@ class AbstractNameDefinition:
     def infer(self):
         raise NotImplementedError
 
-    @abstractmethod
     def goto(self):
         # Typically names are already definitions and therefore a goto on that
         # name will always result on itself.
@@ -105,6 +103,9 @@ class AbstractArbitraryName(AbstractNameDefinition):
 
 
 class AbstractTreeName(AbstractNameDefinition):
+    tree_name: Any
+    parent_context: Any
+
     def __init__(self, parent_context, tree_name):
         self.parent_context = parent_context
         self.tree_name = tree_name
@@ -194,10 +195,11 @@ class AbstractTreeName(AbstractNameDefinition):
                 new_dotted = deep_ast_copy(par)
                 new_dotted.children[index - 1:] = []
                 values = context.infer_node(new_dotted)
-                return unite(
-                    value.goto(name, name_context=context)
+                return [
+                    n
+                    for n in value.goto(name, name_context=context)
                     for value in values
-                )
+                ]
 
         if node_type == 'trailer' and par.children[0] == '.':
             values = infer_call_of_leaf(context, name, cut_own_trailer=True)
@@ -222,6 +224,9 @@ class AbstractTreeName(AbstractNameDefinition):
 
 
 class ValueNameMixin:
+    _value: Any
+    parent_context: Any
+
     def infer(self):
         return ValueSet([self._value])
 
@@ -357,6 +362,8 @@ class TreeNameDefinition(AbstractTreeName):
 
 
 class _ParamMixin:
+    get_kind: Any
+
     def maybe_positional_argument(self, include_star=True):
         options = [Parameter.POSITIONAL_ONLY, Parameter.POSITIONAL_OR_KEYWORD]
         if include_star:
@@ -629,6 +636,10 @@ class NameWrapper:
 
 
 class StubNameMixin:
+    api_type: str
+    tree_name: Any
+    infer: Any
+
     def py__doc__(self):
         from jedi.inference.gradual.conversion import convert_names
         # Stubs are not complicated and we can just follow simple statements
@@ -640,7 +651,7 @@ class StubNameMixin:
 
         names = convert_names(names, prefer_stub_to_compiled=False)
         if self in names:
-            return super().py__doc__()
+            return super().py__doc__()  # type: ignore
         else:
             # We have signatures ourselves in stubs, so don't use signatures
             # from the implementation.

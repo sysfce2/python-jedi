@@ -474,7 +474,7 @@ def _load_python_module(inference_state, file_io,
     )
 
 
-def _load_builtin_module(inference_state, import_names=None, sys_path=None):
+def _load_builtin_module(inference_state, import_names, sys_path):
     project = inference_state.project
     if sys_path is None:
         sys_path = inference_state.get_sys_path()

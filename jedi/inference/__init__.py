@@ -62,6 +62,8 @@ I need to mention now that lazy type inference is really good because it
 only *inferes* what needs to be *inferred*. All the statements and modules
 that are not used are just being ignored.
 """
+from typing import Any
+
 import parso
 from jedi.file_io import FileIO
 
@@ -82,6 +84,7 @@ from jedi.plugins import plugin_manager
 
 
 class InferenceState:
+    analysis_modules: list[Any]
     def __init__(self, project, environment=None, script_path=None):
         if environment is None:
             environment = project.get_environment()
