@@ -39,7 +39,7 @@ def _is_type(obj):
 
 
 def _shadowed_dict(klass):
-    dict_attr = type.__dict__["__dict__"]
+    dict_attr = type.__dict__["__dict__"]  # type: ignore[index]
     for entry in _static_getmro(klass):
         try:
             class_dict = dict_attr.__get__(entry)["__dict__"]
@@ -54,7 +54,7 @@ def _shadowed_dict(klass):
 
 
 def _static_getmro(klass):
-    mro = type.__dict__['__mro__'].__get__(klass)
+    mro = type.__dict__['__mro__'].__get__(klass)  # type: ignore[index]
     if not isinstance(mro, (tuple, list)):
         # There are unfortunately no tests for this, I was not able to
         # reproduce this in pure Python. However should still solve the issue

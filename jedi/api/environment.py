@@ -254,7 +254,7 @@ def get_cached_default_environment():
     # /path/to/env so we need to fully resolve the paths in order to
     # compare them.
     if var and os.path.realpath(var) != os.path.realpath(environment.path):
-        _get_cached_default_environment.clear_cache()
+        _get_cached_default_environment.clear_cache()  # type: ignore[attr-defined]
         return _get_cached_default_environment()
     return environment
 

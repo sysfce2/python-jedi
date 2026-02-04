@@ -2,6 +2,7 @@
 Module is used to infer Django model fields.
 """
 from inspect import Parameter
+from typing import Any
 
 from jedi import debug
 from jedi.inference.cache import inference_state_function_cache
@@ -140,7 +141,7 @@ def _new_dict_filter(cls, is_instance):
         include_metaclasses=False,
         include_type_when_class=False)
     )
-    dct = {
+    dct: dict[str, Any] = {
         name.string_name: DjangoModelName(cls, name, is_instance)
         for filter_ in reversed(filters)
         for name in filter_.values()

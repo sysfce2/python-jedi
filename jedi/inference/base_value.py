@@ -351,11 +351,16 @@ class _ValueWrapperBase(HelperValueMixin):
 
 
 class LazyValueWrapper(_ValueWrapperBase):
-    @safe_property
-    @memoize_method
-    def _wrapped_value(self):
-        with debug.increase_indent_cm('Resolve lazy value wrapper'):
-            return self._get_wrapped_value()
+    if TYPE_CHECKING:
+        @property
+        def _wrapped_value(self) -> Any:
+            return
+    else:
+        @safe_property
+        @memoize_method
+        def _wrapped_value(self):
+            with debug.increase_indent_cm('Resolve lazy value wrapper'):
+                return self._get_wrapped_value()
 
     def __repr__(self):
         return '<%s>' % (self.__class__.__name__)

@@ -189,6 +189,7 @@ class CompiledInstance(AbstractInstanceValue):
 
 class _BaseTreeInstance(AbstractInstanceValue):
     get_defined_names: Any
+    _arguments: Any
 
     @property
     def array_type(self):

@@ -245,7 +245,7 @@ class ValueNameMixin:
     def get_root_context(self):
         if self.parent_context is None:  # A module
             return self._value.as_context()
-        return super().get_root_context()
+        return super().get_root_context()  # type: ignore
 
     def get_defining_qualified_value(self):
         context = self.parent_context
@@ -365,13 +365,13 @@ class _ParamMixin:
     get_kind: Any
 
     def maybe_positional_argument(self, include_star=True):
-        options = [Parameter.POSITIONAL_ONLY, Parameter.POSITIONAL_OR_KEYWORD]
+        options: list[int] = [Parameter.POSITIONAL_ONLY, Parameter.POSITIONAL_OR_KEYWORD]
         if include_star:
             options.append(Parameter.VAR_POSITIONAL)
         return self.get_kind() in options
 
     def maybe_keyword_argument(self, include_stars=True):
-        options = [Parameter.KEYWORD_ONLY, Parameter.POSITIONAL_OR_KEYWORD]
+        options: list[int] = [Parameter.KEYWORD_ONLY, Parameter.POSITIONAL_OR_KEYWORD]
         if include_stars:
             options.append(Parameter.VAR_KEYWORD)
         return self.get_kind() in options

@@ -135,7 +135,7 @@ class _AbstractArgumentsMixin:
 
 class AbstractArguments(_AbstractArgumentsMixin):
     context = None
-    argument_node = None
+    argument_node: Any = None
     trailer = None
 
 

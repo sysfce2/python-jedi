@@ -694,6 +694,9 @@ class ClassValue(ClassMixin, FunctionAndClassBase, metaclass=CachedMetaClass):
         """
         bases_arguments = self._get_bases_arguments()
 
+        if bases_arguments is None:
+            return None
+
         if bases_arguments.argument_node.type != "arglist":
             # If it is not inheriting from the base model and having
             # extra parameters, then init behavior is not changed.

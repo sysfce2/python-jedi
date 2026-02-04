@@ -233,7 +233,7 @@ class Sequence(LazyAttributeOverwrite, IterableMixin):
 class _BaseComprehension(ComprehensionMixin):
     def __init__(self, inference_state, defining_context, sync_comp_for_node, entry_node):
         assert sync_comp_for_node.type == 'sync_comp_for'
-        super().__init__(inference_state)
+        super().__init__(inference_state)  # type: ignore[call-arg]
         self._defining_context = defining_context
         self._sync_comp_for_node = sync_comp_for_node
         self._entry_node = entry_node

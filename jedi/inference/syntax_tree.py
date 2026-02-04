@@ -435,7 +435,7 @@ def _infer_expr_stmt(context, stmt, seek_name=None):
             value_set = ValueSet(to_mod(v) for v in left_values)
         else:
             operator = copy.copy(first_operator)
-            operator.value = operator.value[:-1]  # type: ignore[attor-defined]
+            operator.value = operator.value[:-1]
             for_stmt = stmt.search_ancestor('for_stmt')
             if for_stmt is not None and for_stmt.type == 'for_stmt' and value_set \
                     and parser_utils.for_stmt_defines_one_name(for_stmt):
