@@ -11,14 +11,14 @@ import jedi
 from ..helpers import test_dir
 
 try:
-    import numpydoc  # NOQA
+    import numpydoc  # type: ignore[import-not-found]  # NOQA
 except ImportError:
     numpydoc_unavailable = True
 else:
     numpydoc_unavailable = False
 
 try:
-    import numpy  # NOQA
+    import numpy  # type: ignore[import-not-found]  # NOQA
 except ImportError:
     numpy_unavailable = True
 else:

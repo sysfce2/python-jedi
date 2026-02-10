@@ -15,6 +15,7 @@ There are three kinds of test:
 
 import textwrap
 from unittest import TestCase
+from typing import Any
 
 import pytest
 
@@ -22,6 +23,8 @@ import jedi
 
 
 class MixinTestFullName(object):
+    assertEqual: Any
+
     operation = None
 
     @pytest.fixture(autouse=True)

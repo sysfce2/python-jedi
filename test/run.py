@@ -168,6 +168,8 @@ class BaseTestCase(object):
 
 
 class IntegrationTestCase(BaseTestCase):
+    source: str  # Defined as a side effect
+
     def __init__(self, test_type, correct, line_nr, column, start, line,
                  path=None, skip_version_info=None):
         super().__init__(skip_version_info)

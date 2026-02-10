@@ -1,7 +1,9 @@
+from typing import Any
+
 try:
     import readline
 except ImportError:
-    readline = False
+    readline = False  # type: ignore[assignment]
 import unittest
 
 from jedi import utils
@@ -15,7 +17,7 @@ class TestSetupReadline(unittest.TestCase):
     def setUp(self, *args, **kwargs):
         super().setUp(*args, **kwargs)
 
-        self.namespace = self.NameSpace()
+        self.namespace: Any = self.NameSpace()
         utils.setup_readline(self.namespace)
 
     def complete(self, text):
@@ -47,8 +49,8 @@ class TestSetupReadline(unittest.TestCase):
     def test_modules(self):
         import sys
         import os
-        self.namespace.sys = sys
-        self.namespace.os = os
+        self.namespace.sys = sys  # type: ignore[attr-defined]
+        self.namespace.os = os  # type: ignore[attr-defined]
 
         try:
             assert self.complete('os.path.join') == ['os.path.join']
@@ -58,8 +60,8 @@ class TestSetupReadline(unittest.TestCase):
             c = {'os.' + d for d in dir(os) if d.startswith('ch')}
             assert set(self.complete('os.ch')) == set(c)
         finally:
-            del self.namespace.sys
-            del self.namespace.os
+            del self.namespace.sys  # type: ignore[attr-defined]
+            del self.namespace.os  # type: ignore[attr-defined]
 
     def test_calls(self):
         s = 'str(bytes'

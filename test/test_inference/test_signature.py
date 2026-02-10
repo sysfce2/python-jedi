@@ -2,6 +2,7 @@ from textwrap import dedent
 from operator import eq, ge, lt
 import re
 import os
+from typing import Any
 
 import pytest
 
@@ -448,7 +449,7 @@ def test_dataclass_signature(
         assert price.name == price_type_infer
 
 
-dataclass_transform_cases = [
+dataclass_transform_cases: list[Any] = [
     # Attributes on the decorated class and its base classes
     # are not considered to be fields.
     # 1/ Declare dataclass transformer

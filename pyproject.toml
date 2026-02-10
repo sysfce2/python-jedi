@@ -1,6 +1,6 @@
 [tool.zuban]
 # Exclude our copies of external stubs
-exclude = "^jedi/third_party"
+exclude = "^jedi/third_party|^test/(completion|refactor|static_analysis|examples)/"
 
 show_error_codes = true
 enable_error_code = "ignore-without-code"

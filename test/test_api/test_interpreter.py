@@ -78,7 +78,7 @@ def test_numpy_like_non_zero():
 
 def test_nested_resolve():
     class XX:
-        def x():
+        def x():  # type: ignore[misc]
             pass
 
     cls = get_completion('XX', locals())
@@ -92,7 +92,7 @@ def test_side_effect_completion():
     Python code, however we want references to Python code as well. Therefore
     we need some mixed kind of magic for tests.
     """
-    _GlobalNameSpace.SideEffectContainer.foo = 1
+    _GlobalNameSpace.SideEffectContainer.foo = 1  # type: ignore[attr-defined]
     side_effect = get_completion('SideEffectContainer', _GlobalNameSpace.__dict__)
 
     # It's a class that contains MixedObject.
@@ -166,7 +166,7 @@ def test_getitem_side_effects():
             # Possible side effects here, should therefore not call this.
             if True:
                 raise NotImplementedError()
-            return index
+            return index  # type: ignore[unreachable]
 
     foo = Foo2()
     _assert_interpreter_complete('foo["asdf"].upper', locals(), ['upper'])
@@ -198,7 +198,7 @@ def test__getattr__completions(allow_unsafe_getattr, class_is_findable):
             raise AttributeError(name)
 
         def __dir__(self):
-            return ['foo', 'fbar'] + object.__dir__(self)
+            return ['foo', 'fbar'] + object.__dir__(self)  # type: ignore[operator]
 
     if not class_is_findable:
         CompleteGetattr.__name__ = "something_somewhere"
@@ -388,7 +388,7 @@ def test_dir_magic_method(allow_unsafe_getattr):
             raise AttributeError(name)
 
         def __dir__(self):
-            return ['foo', 'bar'] + object.__dir__(self)
+            return ['foo', 'bar'] + object.__dir__(self)  # type: ignore[operator]
 
     itp = jedi.Interpreter("ca.", [{'ca': CompleteAttrs()}])
     completions = itp.complete()
@@ -410,7 +410,7 @@ def test_dir_magic_method(allow_unsafe_getattr):
 def test_name_not_findable():
     class X():
         if 0:
-            NOT_FINDABLE  # noqa: F821
+            NOT_FINDABLE    # type: ignore[unreachable] # noqa: F821
 
         def hidden(self):
             return
@@ -493,7 +493,7 @@ def test__wrapped__():
 
 def test_illegal_class_instance():
     class X:
-        __class__ = 1
+        __class__ = 1  # type: ignore[assignment]
     X.__name__ = 'asdf'
     d, = jedi.Interpreter('foo', [{'foo': X()}]).infer()
     v, = d._name.infer()
@@ -537,7 +537,7 @@ def test_partial_signatures(code, expected, index):
 
 def test_type_var():
     """This was an issue before, see Github #1369"""
-    x = typing.TypeVar('myvar')
+    x = typing.TypeVar('myvar')  # type: ignore[misc]
     def_, = jedi.Interpreter('x', [locals()]).infer()
     assert def_.name == 'TypeVar'
 
@@ -576,7 +576,7 @@ def test_dict_completion(code, column, expected):
     strs = {'asdf': 1, """foo""": 2, r'fbar': 3}
     mixed = {1: 2, 1.10: 4, None: 6, r'a\sdf': 8, b'foo': 9}
 
-    class Inherited(dict):
+    class Inherited(dict):  # type: ignore[type-arg]
         pass
     inherited = Inherited(blablu=3)
 
@@ -624,10 +624,10 @@ def test_dunders(class_is_findable, code, expected, allow_unsafe_getattr):
         def __getitem__(self, key) -> int:
             return 1
 
-        def __iter__(self, key) -> Iterator[str]:
+        def __iter__(self, key) -> Iterator[str]:  # type: ignore[empty-body]
             pass
 
-        def __next__(self, key) -> float:
+        def __next__(self, key) -> float:  # type: ignore[empty-body]
             pass
 
     if not class_is_findable:
