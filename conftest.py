@@ -133,11 +133,13 @@ def goto_or_help(request, Script):
 
 @pytest.fixture(scope='session', params=['goto', 'help', 'infer'])
 def goto_or_help_or_infer(request, Script):
-    def do(code, *args, **kwargs):
-        return getattr(Script(code), request.param)(*args, **kwargs)
+    class GotoOrHelpOrInfer:
+        def __call__(self, code, *args, **kwargs):
+            return getattr(Script(code), request.param)(*args, **kwargs)
 
-    do.type = request.param  # type: ignore[attr-defined]
-    return do
+        type = request.param
+
+    return GotoOrHelpOrInfer()
 
 
 @pytest.fixture(scope='session', params=['goto', 'complete', 'help'])
