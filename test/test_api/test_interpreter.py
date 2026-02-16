@@ -810,11 +810,11 @@ def test_try_to_use_return_annotation_for_property(class_is_findable):
             raise BaseException
 
         @property
-        def with_annotation_garbage1(self) -> 'asldjflksjdfljdslkjfsl':  # noqa
+        def with_annotation_garbage1(self) -> 'asldjflksjdfljdslkjfsl':  # type: ignore[name-defined] # noqa
             return Hello()
 
         @property
-        def with_annotation_garbage2(self) -> 'sdf$@@$5*+8':  # noqa
+        def with_annotation_garbage2(self) -> 'sdf & 8':  # type: ignore[valid-type]  # noqa
             return Hello()
 
         @property

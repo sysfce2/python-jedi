@@ -136,7 +136,7 @@ def goto_or_help_or_infer(request, Script):
     def do(code, *args, **kwargs):
         return getattr(Script(code), request.param)(*args, **kwargs)
 
-    do.type = request.param
+    do.type = request.param  # type: ignore[attr-defined]
     return do
 
 
