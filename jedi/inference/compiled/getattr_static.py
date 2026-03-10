@@ -90,7 +90,10 @@ def getattr_static(obj, attr, default=_sentinel):
     if not _is_type(obj):
         klass = type(obj)
         dict_attr = _shadowed_dict(klass)
-        if (dict_attr is _sentinel or type(dict_attr) is types.MemberDescriptorType):
+        # In Python 3.15+, __dict__ is a GetSetDescriptorType instead of being _sentinel
+        if (dict_attr is _sentinel
+                or type(dict_attr) is types.MemberDescriptorType
+                or type(dict_attr) is types.GetSetDescriptorType):
             instance_result = _check_instance(obj, attr)
     else:
         klass = obj

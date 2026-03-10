@@ -746,7 +746,8 @@ def test_complete_not_findable_class_source():
 def test_param_infer_default():
     abs_sig, = jedi.Interpreter('abs(', [{'abs': abs}]).get_signatures()
     param, = abs_sig.params
-    assert param.name == 'x'
+    # Parameter name changed from 'x' to 'number' in Python 3.15
+    assert param.name in ('x', 'number')
     assert param.infer_default() == []
 
 
