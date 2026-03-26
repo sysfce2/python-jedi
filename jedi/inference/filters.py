@@ -16,7 +16,7 @@ from jedi.inference.utils import to_list
 from jedi.inference.names import TreeNameDefinition, ParamName, \
     AnonymousParamName, AbstractNameDefinition, NameWrapper
 
-_definition_name_cache: MutableMapping[UsedNamesMapping, dict[str, tuple[Name, ...]]] \
+_definition_name_cache: 'MutableMapping[UsedNamesMapping, dict[str, tuple[Name, ...]]]' \
     = weakref.WeakKeyDictionary()
 
 

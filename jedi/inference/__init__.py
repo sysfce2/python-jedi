@@ -84,7 +84,7 @@ from jedi.plugins import plugin_manager
 
 
 class InferenceState:
-    analysis_modules: list[Any]
+    analysis_modules: "list[Any]"
 
     def __init__(self, project, environment=None, script_path=None):
         if environment is None:
