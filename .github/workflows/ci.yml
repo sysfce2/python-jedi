@@ -27,7 +27,7 @@ jobs:
           allow-prereleases: true
 
       - name: Install dependencies
-        run: 'pip install .[testing]'
+        run: 'pip install .[dev]'
 
       - name: Run tests
         run: python -m pytest
@@ -43,7 +43,7 @@ jobs:
           submodules: recursive
 
       - name: Install dependencies
-        run: 'pip install .[qa]'
+        run: 'pip install .[dev]'
 
       - name: Run tests
         run: |
@@ -60,7 +60,7 @@ jobs:
           submodules: recursive
 
       - name: Install dependencies
-        run: 'pip install .[testing] coverage'
+        run: 'pip install .[dev] coverage'
 
       - name: Run tests
         run: |

@@ -39,7 +39,7 @@ setup(name='jedi',
       # Python 3.13 grammars are added to parso in 0.8.4
       install_requires=['parso>=0.8.6,<0.9.0'],
       extras_require={
-          'testing': [
+          'dev': [
               'pytest<9.0.0',
               # docopt for sith doctests
               'docopt',
@@ -48,8 +48,6 @@ setup(name='jedi',
               'Django',
               'attrs',
               'typing_extensions',
-          ],
-          'qa': [
               # latest version on 2025-06-16
               'flake8==7.2.0',
               'zuban==0.6.2',
