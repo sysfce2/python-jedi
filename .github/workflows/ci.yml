@@ -48,7 +48,7 @@ jobs:
       - name: Run tests
         run: |
           python -m flake8 jedi test setup.py
-          python -m mypy jedi sith.py setup.py
+          zuban check
 
   coverage:
     runs-on: ubuntu-24.04
