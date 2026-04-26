@@ -49,7 +49,7 @@ setup(name='jedi',
               'attrs',
               'typing_extensions',
               # latest version on 2025-06-16
-              'flake8==7.2.0',
+              'flake8==7.1.2',
               'zuban==0.7.0',
               # Arbitrary pins, latest at the time of pinning
               'types-setuptools==80.9.0.20250529',
