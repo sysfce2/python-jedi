@@ -197,8 +197,8 @@ class AbstractTreeName(AbstractNameDefinition):
                 values = context.infer_node(new_dotted)
                 return [
                     n
-                    for n in value.goto(name, name_context=context)
                     for value in values
+                    for n in value.goto(name, name_context=context)
                 ]
 
         if node_type == 'trailer' and par.children[0] == '.':
