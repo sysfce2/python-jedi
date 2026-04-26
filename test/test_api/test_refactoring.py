@@ -54,6 +54,7 @@ def test_rename_mod(Script, dir_with_content):
         ''').format(dir=dir_with_content)
 
 
+# TODO does this test still make sense?
 @pytest.mark.skipif('sys.version_info[:2] < (3, 8)', reason="Python 3.8 introduces dirs_exist_ok")
 def test_namespace_package(Script, tmpdir):
     origin = get_example_dir('implicit_namespace_package')

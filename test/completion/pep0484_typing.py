@@ -476,8 +476,6 @@ dynamic_annotation('')
 # TypeDict
 # -------------------------
 
-# python >= 3.8
-
 class Foo(typing.TypedDict):
     foo: str
     bar: typing.List[float]
