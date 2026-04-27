@@ -26,7 +26,7 @@ def test_find_system_environments():
 
 @pytest.mark.parametrize(
     'version',
-    ['3.10', '3.11', '3.12', '3.13']
+    jedi.api.environment._SUPPORTED_PYTHONS,
 )
 def test_versions(version):
     try:
