@@ -507,19 +507,17 @@ class DirectObjectAccess:
 
     def _annotation_to_str(self, annotation):
         # In Python 3.14+, Union types are displayed as X | Y instead of Union[X, Y]
-        # We normalize to Union[X, Y] for consistency
-        if sys.version_info >= (3, 8):
-            import typing
-            origin = typing.get_origin(annotation)
-            if origin is typing.Union:
-                # Get the args and format them as Union[...]
-                args = typing.get_args(annotation)
-                formatted_args = ', '.join(
-                    self._annotation_to_str(arg) if hasattr(arg, '__origin__')
-                    else getattr(arg, '__name__', str(arg))
-                    for arg in args
-                )
-                return f'Union[{formatted_args}]'
+        # We normalize to that for consistency
+        import typing
+        origin = typing.get_origin(annotation)
+        if origin is typing.Union:
+            # Get the args and format them as Union[...]
+            args = typing.get_args(annotation)
+            return ' | '.join(
+                self._annotation_to_str(arg) if hasattr(arg, '__origin__')
+                else getattr(arg, '__name__', str(arg))
+                for arg in args
+            )
         return inspect.formatannotation(annotation)
 
     def get_signature_params(self):

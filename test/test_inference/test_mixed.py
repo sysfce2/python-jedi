@@ -111,4 +111,4 @@ def test_compiled_signature_annotation_string():
 
     s, = jedi.Interpreter('func()', [locals()]).get_signatures(1, 5)
     assert s.params[0].description == 'param x: Type'
-    assert s.params[1].description == 'param y: Union[Type, int]'
+    assert s.params[1].description == 'param y: Type | int'
