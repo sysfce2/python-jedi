@@ -670,8 +670,7 @@ def bar():
         ({'return': 'typing.Any'},
          ['_AnyMeta'] if sys.version_info >= (3, 11) else [], ''),
 
-        ({'return': 'typing.Tuple[int, str]'},
-         ['Tuple' if sys.version_info[:2] == (3, 6) else 'tuple'], ''),
+        ({'return': 'typing.Tuple[int, str]'}, ['tuple'], ''),
         ({'return': 'typing.Tuple[int, str]'}, ['int'], 'x()[0]'),
         ({'return': 'typing.Tuple[int, str]'}, ['str'], 'x()[1]'),
         ({'return': 'typing.Tuple[int, str]'}, [], 'x()[2]'),
