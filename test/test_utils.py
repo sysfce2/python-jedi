@@ -83,6 +83,9 @@ class TestSetupReadline(unittest.TestCase):
             '_', 'O_', 'EX_', 'EFD_', 'MFD_', 'TFD_',
             'SF_', 'ST_', 'CLD_', 'POSIX_SPAWN_', 'P_',
             'RWF_', 'CLONE_', 'SCHED_', 'SPLICE_',
+            # Python 3.15+ new constants
+            'AT_', 'PIDFD_', 'STATX_', 'GRND_', 'XATTR_',
+            'RTLD_', 'PRIO_', 'F_', 'SEEK_', 'NODEV',
         ]
         difference = {
             x for x in difference

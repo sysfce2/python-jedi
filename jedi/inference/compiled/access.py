@@ -477,22 +477,49 @@ class DirectObjectAccess:
         """
         name = None
         args = ()
-        if safe_getattr(self._obj, '__module__', default='') == 'typing':
+        # Use getattr instead of safe_getattr for __module__ as getattr_static
+        # fails on typing types in Python 3.14+
+        module = getattr(self._obj, '__module__', '')
+        if module == 'typing':
+            import typing
+            # Try regex first (works for most types)
             m = re.match(r'typing.(\w+)\[', repr(self._obj))
             if m is not None:
                 name = m.group(1)
+            elif sys.version_info >= (3, 8):
+                # Fallback to get_origin() for Python 3.8+ when regex fails
+                # In Python 3.14+, Union/Optional repr changed to use | syntax
+                origin = typing.get_origin(self._obj)
+                if origin is typing.Union:
+                    name = 'Union'
 
-                import typing
-                if sys.version_info >= (3, 8):
-                    args = typing.get_args(self._obj)
-                else:
-                    args = safe_getattr(self._obj, '__args__', default=None)
+            # Get args
+            if sys.version_info >= (3, 8):
+                args = typing.get_args(self._obj)
+            else:
+                args = safe_getattr(self._obj, '__args__', default=None)
+                if args is None:
+                    args = ()
         return name, tuple(self._create_access_path(arg) for arg in args)
 
     def needs_type_completions(self):
         return inspect.isclass(self._obj) and self._obj != type
 
     def _annotation_to_str(self, annotation):
+        # In Python 3.14+, Union types are displayed as X | Y instead of Union[X, Y]
+        # We normalize to Union[X, Y] for consistency
+        if sys.version_info >= (3, 8):
+            import typing
+            origin = typing.get_origin(annotation)
+            if origin is typing.Union:
+                # Get the args and format them as Union[...]
+                args = typing.get_args(annotation)
+                formatted_args = ', '.join(
+                    self._annotation_to_str(arg) if hasattr(arg, '__origin__')
+                    else getattr(arg, '__name__', str(arg))
+                    for arg in args
+                )
+                return f'Union[{formatted_args}]'
         return inspect.formatannotation(annotation)
 
     def get_signature_params(self):

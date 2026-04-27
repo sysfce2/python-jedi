@@ -664,7 +664,7 @@ def bar():
         ({'return': 'typing.Union["str", int]'},
          ['int', 'str'] if sys.version_info >= (3, 9) else ['int'], ''),
         ({'return': 'typing.Union["str", 1]'},
-         ['str'] if sys.version_info >= (3, 11) else [], ''),
+         [] if sys.version_info >= (3, 14) else (['str'] if sys.version_info >= (3, 11) else []), ''),
         ({'return': 'typing.Optional[str]'}, ['NoneType', 'str'], ''),
         ({'return': 'typing.Optional[str, int]'}, [], ''),  # Takes only one arg
         ({'return': 'typing.Any'},
@@ -746,7 +746,8 @@ def test_complete_not_findable_class_source():
 def test_param_infer_default():
     abs_sig, = jedi.Interpreter('abs(', [{'abs': abs}]).get_signatures()
     param, = abs_sig.params
-    assert param.name == 'x'
+    # Parameter name changed from 'x' to 'number' in Python 3.15
+    assert param.name in ('x', 'number')
     assert param.infer_default() == []
 
 
