@@ -123,10 +123,6 @@ class X:
     ]
 )
 def test_tree_signature(Script, environment, code, expected):
-    # Only test this in the latest version, because of /
-    if environment.version_info < (3, 8):
-        pytest.skip()
-
     if expected is None:
         assert not Script(code).get_signatures()
     else:
@@ -249,18 +245,11 @@ def test_pow_signature(Script, environment):
     # See github #1357
     sigs = Script('pow(').get_signatures()
     strings = {sig.to_string() for sig in sigs}
-    if environment.version_info < (3, 8):
-        assert strings == {'pow(base: _SupportsPow2[_E, _T_co], exp: _E, /) -> _T_co',
-                           'pow(base: _SupportsPow3[_E, _M, _T_co], exp: _E, mod: _M, /) -> _T_co',
-                           'pow(base: float, exp: float, mod: None=..., /) -> float',
-                           'pow(base: int, exp: int, mod: None=..., /) -> Any',
-                           'pow(base: int, exp: int, mod: int, /) -> int'}
-    else:
-        assert strings == {'pow(base: _SupportsPow2[_E, _T_co], exp: _E) -> _T_co',
-                           'pow(base: _SupportsPow3[_E, _M, _T_co], exp: _E, mod: _M) -> _T_co',
-                           'pow(base: float, exp: float, mod: None=...) -> float',
-                           'pow(base: int, exp: int, mod: None=...) -> Any',
-                           'pow(base: int, exp: int, mod: int) -> int'}
+    assert strings == {'pow(base: _SupportsPow2[_E, _T_co], exp: _E) -> _T_co',
+                       'pow(base: _SupportsPow3[_E, _M, _T_co], exp: _E, mod: _M) -> _T_co',
+                       'pow(base: float, exp: float, mod: None=...) -> float',
+                       'pow(base: int, exp: int, mod: None=...) -> Any',
+                       'pow(base: int, exp: int, mod: int) -> int'}
 
 
 @pytest.mark.parametrize(
@@ -408,13 +397,8 @@ def test_wraps_signature(Script, code, signature):
 def test_dataclass_signature(
     Script, start, start_params, include_params, environment
 ):
-    if environment.version_info < (3, 8):
-        # Final is not yet supported
-        price_type = "float"
-        price_type_infer = "float"
-    else:
-        price_type = "Final[float]"
-        price_type_infer = "object"
+    price_type = "Final[float]"
+    price_type_infer = "object"
 
     code = dedent(
         f"""
@@ -731,13 +715,8 @@ def test_extensions_dataclass_transform_signature(
     if not has_typing_ext:
         raise pytest.skip("typing_extensions needed in target environment to run this test")
 
-    if environment.version_info < (3, 8):
-        # Final is not yet supported
-        price_type = "float"
-        price_type_infer = "float"
-    else:
-        price_type = "Final[float]"
-        price_type_infer = "object"
+    price_type = "Final[float]"
+    price_type_infer = "object"
 
     code = dedent(
         f"""
