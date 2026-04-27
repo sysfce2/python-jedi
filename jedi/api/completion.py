@@ -291,6 +291,8 @@ class Completion:
                 )
             elif nonterminals[-1] in ('trailer', 'dotted_name') and nodes[-1] == '.':
                 dot = self._module_node.get_leaf_for_position(self._position)
+                if dot.type == "newline":
+                    dot = dot.get_previous_leaf()
                 if dot.type == "endmarker":
                     # This is a bit of a weird edge case, maybe we can somehow
                     # generalize this.

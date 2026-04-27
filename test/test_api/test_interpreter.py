@@ -867,3 +867,9 @@ def test_star_import_completions():
 
     assert 'dump' in names
     assert 'dumps' in names
+
+
+def test_whitespace_after_dot_completion(Script):
+    # From #1954
+    completions = jedi.Interpreter("object. \n", []).complete(1, 8)
+    assert "mro" in [c.name for c in completions]
