@@ -459,8 +459,6 @@ X().just_partial('')[0]
 #? str()
 X().just_partial('')[1]
 
-# python >= 3.8
-
 @functools.lru_cache
 def x() -> int: ...
 @functools.lru_cache()

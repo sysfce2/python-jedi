@@ -168,6 +168,8 @@ class BaseTestCase(object):
 
 
 class IntegrationTestCase(BaseTestCase):
+    source: str  # Defined as a side effect
+
     def __init__(self, test_type, correct, line_nr, column, start, line,
                  path=None, skip_version_info=None):
         super().__init__(skip_version_info)
@@ -446,7 +448,7 @@ Options:
     --pdb           Enable pdb debugging on fail.
     -d, --debug     Enable text output debugging (please install ``colorama``).
     --thirdparty    Also run thirdparty tests (in ``completion/thirdparty``).
-    --env <dotted>  A Python version, like 3.9, 3.8, etc.
+    --env <dotted>  A Python version, like 3.14, 3.13, etc.
 """
 if __name__ == '__main__':
     import docopt

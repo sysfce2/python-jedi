@@ -523,7 +523,7 @@ def test_added_equals_to_params(Script):
 
 def test_builtin_module_with_path(Script):
     """
-    This test simply tests if a module from /usr/lib/python3.8/lib-dynload/ has
+    This test simply tests if a module from /usr/lib/python3.14/lib-dynload/ has
     a path or not. It shouldn't have a module_path, because that is just
     confusing.
     """

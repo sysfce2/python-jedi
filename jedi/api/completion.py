@@ -1,5 +1,6 @@
 import re
 from textwrap import dedent
+from typing import Any
 from inspect import Parameter
 
 from parso.python.token import PythonTokenTypes
@@ -265,7 +266,7 @@ class Completion:
                         elif type_ == 'for_stmt':
                             allowed_transitions.append('else')
 
-        completion_names = []
+        completion_names: list[Any] = []
 
         kwargs_only = False
         if any(t in allowed_transitions for t in (PythonTokenTypes.NAME,

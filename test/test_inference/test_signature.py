@@ -2,6 +2,7 @@ from textwrap import dedent
 from operator import eq, ge, lt
 import re
 import os
+from typing import Any
 
 import pytest
 
@@ -405,7 +406,7 @@ def test_wraps_signature(Script, code, signature):
     ],
 )
 def test_dataclass_signature(
-    Script, skip_pre_python37, start, start_params, include_params, environment
+    Script, start, start_params, include_params, environment
 ):
     if environment.version_info < (3, 8):
         # Final is not yet supported
@@ -448,7 +449,7 @@ def test_dataclass_signature(
         assert price.name == price_type_infer
 
 
-dataclass_transform_cases = [
+dataclass_transform_cases: list[Any] = [
     # Attributes on the decorated class and its base classes
     # are not considered to be fields.
     # 1/ Declare dataclass transformer
@@ -724,7 +725,7 @@ ids = [
     'start, start_params, include_params', dataclass_transform_cases, ids=ids
 )
 def test_extensions_dataclass_transform_signature(
-    Script, skip_pre_python37, start, start_params, include_params, environment
+    Script, start, start_params, include_params, environment
 ):
     has_typing_ext = bool(Script('import typing_extensions').infer())
     if not has_typing_ext:
@@ -845,7 +846,7 @@ def test_dataclass_transform_signature(
     ],
     ids=["define", "frozen", "define_customized", "define_subclass", "define_both"]
 )
-def test_attrs_signature(Script, skip_pre_python37, start, start_params):
+def test_attrs_signature(Script, start, start_params):
     has_attrs = bool(Script('import attrs').infer())
     if not has_attrs:
         raise pytest.skip("attrs needed in target environment to run this test")

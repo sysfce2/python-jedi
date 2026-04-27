@@ -222,7 +222,7 @@ def test_goto_stubs_on_itself(Script, code, type_):
 
 def test_module_exists_only_as_stub(Script):
     try:
-        import redis  # noqa: F401
+        import redis  # type: ignore[import-untyped]  # noqa: F401
     except ImportError:
         pass
     else:

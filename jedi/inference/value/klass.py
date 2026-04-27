@@ -38,7 +38,7 @@ py__doc__()                            Returns the docstring for a value.
 """
 from __future__ import annotations
 
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, TYPE_CHECKING, Any
 
 from jedi import debug
 from jedi.parser_utils import get_cached_parent_scope, expr_is_dotted, \
@@ -60,6 +60,9 @@ from jedi.plugins import plugin_manager
 from inspect import Parameter
 from jedi.inference.names import BaseTreeParamName
 from jedi.inference.signature import AbstractSignature
+
+if TYPE_CHECKING:
+    from jedi.inference import InferenceState
 
 
 class ClassName(TreeNameDefinition):
@@ -197,6 +200,15 @@ def get_dataclass_param_names(cls) -> List[DataclassParamName]:
 
 
 class ClassMixin:
+    tree_node: Any
+    parent_context: Any
+    inference_state: InferenceState
+    py__bases__: Any
+    get_metaclasses: Any
+    get_metaclass_filters: Any
+    get_metaclass_signatures: Any
+    list_type_vars: Any
+
     def is_class(self):
         return True
 
@@ -681,6 +693,9 @@ class ClassValue(ClassMixin, FunctionAndClassBase, metaclass=CachedMetaClass):
         It returns ``True`` if ``class X(init=False):`` else ``False``.
         """
         bases_arguments = self._get_bases_arguments()
+
+        if bases_arguments is None:
+            return None
 
         if bases_arguments.argument_node.type != "arglist":
             # If it is not inheriting from the base model and having
