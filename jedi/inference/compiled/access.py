@@ -471,35 +471,28 @@ class DirectObjectAccess:
         op = _OPERATORS[operator]
         return self._create_access_path(op(self._obj, other_access._obj))
 
-    def get_annotation_name_and_args(self):
+    def get_annotation_name_and_args(self) -> tuple[str | None, tuple[AccessPath, ...]]:
         """
         Returns Tuple[Optional[str], Tuple[AccessPath, ...]]
         """
         name = None
         args = ()
-        # Use getattr instead of safe_getattr for __module__ as getattr_static
-        # fails on typing types in Python 3.14+
-        module = getattr(self._obj, '__module__', '')
-        if module == 'typing':
-            import typing
+        module = getattr_static(self._obj, '__module__', '')
+        if type(self._obj) is typing.Union:  # zuban: ignore[comparison-overlap]  # TODO zuban
+            # This is mostly formatted like `int | str` and we therefor need to
+            # check the type.
+            args = typing.get_args(self._obj)
+            name = "Union"
+        elif safe_getattr(self._obj, '__module__', default='') == 'typing':
             # Try regex first (works for most types)
             m = re.match(r'typing.(\w+)\[', repr(self._obj))
             if m is not None:
                 name = m.group(1)
-            elif sys.version_info >= (3, 8):
-                # Fallback to get_origin() for Python 3.8+ when regex fails
-                # In Python 3.14+, Union/Optional repr changed to use | syntax
-                origin = typing.get_origin(self._obj)
-                if origin is typing.Union:
-                    name = 'Union'
 
-            # Get args
-            if sys.version_info >= (3, 8):
-                args = typing.get_args(self._obj)
-            else:
-                args = safe_getattr(self._obj, '__args__', default=None)
-                if args is None:
-                    args = ()
+                if sys.version_info >= (3, 8):
+                    args = typing.get_args(self._obj)
+                else:
+                    args = safe_getattr(self._obj, '__args__', default=None)
         return name, tuple(self._create_access_path(arg) for arg in args)
 
     def needs_type_completions(self):
