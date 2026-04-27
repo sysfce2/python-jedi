@@ -662,7 +662,7 @@ def bar():
         # typing is available via globals.
         ({'return': 'typing.Union[str, int]'}, ['int', 'str'], ''),
         ({'return': 'typing.Union["str", int]'},
-         ['int', 'str'] if sys.version_info >= (3, 9) else ['int'], ''),
+         ['int', 'str'], ''),
         ({'return': 'typing.Union["str", 1]'},
          [] if sys.version_info >= (3, 14) else (['str'] if sys.version_info >= (3, 11) else []), ''),
         ({'return': 'typing.Optional[str]'}, ['NoneType', 'str'], ''),
