@@ -663,7 +663,7 @@ def bar():
         ({'return': 'typing.Union[str, int]'}, ['int', 'str'], ''),
         ({'return': 'typing.Union["str", int]'}, ['int', 'str'], ''),
         ({'return': 'typing.Union["str", 1]'},
-         [] if sys.version_info >= (3, 14) else (['str'] if sys.version_info >= (3, 11) else []), ''),
+         (['str'] if (3, 14) > sys.version_info >= (3, 11) else []), ''),
         ({'return': 'typing.Optional[str]'}, ['NoneType', 'str'], ''),
         ({'return': 'typing.Optional[str, int]'}, [], ''),  # Takes only one arg
         ({'return': 'typing.Any'},

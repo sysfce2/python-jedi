@@ -477,7 +477,6 @@ class DirectObjectAccess:
         """
         name = None
         args = ()
-        module = getattr_static(self._obj, '__module__', '')
         if type(self._obj) is typing.Union:  # zuban: ignore[comparison-overlap]  # TODO zuban
             # This is mostly formatted like `int | str` and we therefor need to
             # check the type.
